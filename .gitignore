@@ -34,9 +34,6 @@ Temporary Items
 # Node modules
 node_modules/
 
-# Build output
-dist/
-
 # environment variables
 .env
 
