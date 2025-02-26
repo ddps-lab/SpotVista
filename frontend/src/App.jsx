@@ -25,16 +25,10 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { useEffect } from 'react';
 
 const AVAILABLE_VENDORS = ['aws'];
 
-const INSTANCES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => ({
-  name: `instance${num}`
-}));
-
-const REGEIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => ({
-  name: `region${num}`
-}));
 const Base = styled.div`
   width: 100%;
   height: 100%;
@@ -60,11 +54,42 @@ const Tooltip = styled.div`
 
 function App() {
   dayjs.extend(utc);
+  const [associations, setAssociations] = useState([]);
 
   const [isQueryOpen, setQueryOpen] = useState(false);
   const [isStartDate, setIsStartDate] = useState('start');
   const [startDate, setStartDate] = useState(dayjs.utc());
   const [endDate, setEndDate] = useState(dayjs.utc());
+  const [selectedInstances, setSelectedInstances] = useState([]);
+  const [filteredRegions, setFilteredRegions] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      'https://spotlake.s3.us-west-2.amazonaws.com/query-selector/associated/association_aws.json'
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setAssociations(data);
+        console.log('Fetched Data:', data);
+      })
+      .catch((error) => {
+        console.error('Fetch Error:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // 선택된 instances에 따라 Region 필터링
+    const regions = selectedInstances
+      .map((instance) => associations[0][instance.name]?.Region || [])
+      .flat();
+    // 중복 제거
+    setFilteredRegions([...new Set(regions)]);
+  }, [selectedInstances, associations]);
 
   return (
     <Base>
@@ -100,19 +125,26 @@ function App() {
               renderInput={(params) => (
                 <TextField {...params} label="Instances" />
               )}
-              options={INSTANCES}
+              options={
+                associations.length > 0 && typeof associations[0] === 'object'
+                  ? Object.keys(associations[0]).map((key) => ({ name: key }))
+                  : []
+              }
+              onChange={(event, newValue) => setSelectedInstances(newValue)}
             />
+
             <Autocomplete
               multiple
               id="regions"
               disableCloseOnSelect
               filterSelectedOptions
-              getOptionLabel={(option) => option.name}
+              getOptionLabel={(option) => option}
               limitTags={3}
               renderInput={(params) => (
                 <TextField {...params} label="Regions" />
               )}
-              options={REGEIONS}
+              options={filteredRegions}
+              disabled={selectedInstances.length === 0} // instances 선택이 없으면 비활성화
             />
             <FormControl fullWidth>
               <FormLabel id="date-type-radio-group">Date Type</FormLabel>
@@ -144,6 +176,8 @@ function App() {
                     slotProps={{
                       field: { clearable: true }
                     }}
+                    value={startDate}
+                    onChange={(newValue) => setStartDate(newValue)}
                   />
                   <DatePicker
                     label="End Date"
@@ -151,6 +185,8 @@ function App() {
                     slotProps={{
                       field: { clearable: true }
                     }}
+                    value={endDate}
+                    onChange={(newValue) => setEndDate(newValue)}
                   />
                 </>
               ) : (

@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 
@@ -16,9 +18,11 @@ const Radio = styled(Button)`
   background: none;
   flex-direction: column;
   justify-content: space-between !important;
+
   ${(props) =>
-    props.clicked === true &&
-    'box-shadow: inset 2px 2px 4px rgba(0,0,0,0.16); background:rgb(61,86,178, 0.1) !important;'}
+    props.$clicked &&
+    `box-shadow: inset 2px 2px 4px rgba(0,0,0,0.16); 
+     background: rgb(61,86,178, 0.1) !important;`}
 
   > .vendor-icon {
     width: 60px;
@@ -34,60 +38,46 @@ const Radio = styled(Button)`
   }
 `;
 
-export default function RadioVendor(props) {
+export default function RadioVendor({ vendors }) {
+  const [selectedVendor, setSelectedVendor] = useState(null);
+
+  const handleClick = (vendor) => {
+    setSelectedVendor(vendor);
+  };
+
   return (
     <Group>
-      {props.vendors &&
-        props.vendors.map((vendor) => {
-          if (vendor === 'aws')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={true}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Amazon Web Services'}
-                />
-                <p className={'vendor-title'}>Amazon Web Services</p>
-              </Radio>
-            );
-          else if (vendor === 'azure')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={false}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Microsoft Azure'}
-                />
-                <p className={'vendor-title'}>Microsoft Azure</p>
-              </Radio>
-            );
-          else if (vendor === 'gcp')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={false}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Google Cloud Platform'}
-                />
-                <p className={'vendor-title'}>Google Cloud Platform</p>
-              </Radio>
-            );
-        })}
+      {vendors &&
+        vendors.map((vendor) => (
+          <Radio
+            onClick={() => handleClick(vendor)}
+            $clicked={selectedVendor === vendor}
+            key={`${vendor}-radio-button`}
+          >
+            <img
+              className={'vendor-icon'}
+              src={`/icons/${vendor}.png`}
+              alt={
+                vendor === 'aws'
+                  ? 'Amazon Web Services'
+                  : vendor === 'azure'
+                    ? 'Microsoft Azure'
+                    : 'Google Cloud Platform'
+              }
+            />
+            <p className={'vendor-title'}>
+              {vendor === 'aws'
+                ? 'Amazon Web Services'
+                : vendor === 'azure'
+                  ? 'Microsoft Azure'
+                  : 'Google Cloud Platform'}
+            </p>
+          </Radio>
+        ))}
     </Group>
   );
 }
+
+RadioVendor.propTypes = {
+  vendors: PropTypes.arrayOf(PropTypes.string).isRequired
+};
