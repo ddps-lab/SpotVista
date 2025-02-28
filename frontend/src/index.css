@@ -6,6 +6,7 @@ html {
   width: 100%;
   height: 100%;
 }
+
 body {
   margin: 0;
   display: flex;
@@ -20,3 +21,5 @@ body {
 @theme {
   --inset-shadow-vendor: inset 2px 2px 4px rgba(0,0,0,0.16); 
 }
+
+@base {}
