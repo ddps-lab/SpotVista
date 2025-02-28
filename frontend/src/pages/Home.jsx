@@ -1,8 +1,6 @@
-import './App.css';
-import Header from './components/Header/index.jsx';
-import RadioVendor from './components/RadioVendor/index.jsx';
-import DataTable from './components/DataTable/index.jsx';
-import styled from 'styled-components';
+import RadioVendor from '../components/RadioVendor/index.jsx';
+import DataTable from '../components/DataTable/index.jsx';
+
 import {
   Autocomplete,
   Button,
@@ -10,56 +8,26 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
   Slider,
   Stack,
   TextField
 } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useState } from 'react';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useEffect } from 'react';
 
 const AVAILABLE_VENDORS = ['aws'];
 
-const Base = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  > .content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    padding: 0px 20px;
-  }
-`;
-
-const Tooltip = styled.div`
-  display: flex;
-  align-self: end;
-  margin-bottom: 10px;
-`;
-
-function App() {
+function Home() {
   dayjs.extend(utc);
   const [associations, setAssociations] = useState([]);
 
   const [isQueryOpen, setQueryOpen] = useState(false);
-  const [isStartDate, setIsStartDate] = useState('start');
-  const [startDate, setStartDate] = useState(dayjs.utc());
-  const [endDate, setEndDate] = useState(dayjs.utc());
+  // const [isStartDate, setIsStartDate] = useState('start');
+  // const [startDate, setStartDate] = useState(dayjs.utc());
+  // const [endDate, setEndDate] = useState(dayjs.utc());
   const [selectedInstances, setSelectedInstances] = useState([]);
   const [filteredRegions, setFilteredRegions] = useState([]);
 
@@ -92,29 +60,21 @@ function App() {
   }, [selectedInstances, associations]);
 
   return (
-    <Base>
-      <Header />
-      <div className={'content'}>
+    <div className="w-full h-[calc(100%-6rem)] flex flex-col items-center py-8 box-border">
+      <div className="container flex flex-col items-center w-full h-full box-border">
         <RadioVendor vendors={AVAILABLE_VENDORS} />
-        <Tooltip>
+        <div className="flex justify-end w-full mb-3 box-border">
           <Button variant="contained" onClick={() => setQueryOpen(true)}>
             <SearchOutlinedIcon fontSize={'small'} />
             Query
           </Button>
-        </Tooltip>
+        </div>
         <DataTable />
       </div>
       <Dialog fullWidth open={isQueryOpen} onClose={() => setQueryOpen(false)}>
         <DialogTitle>Query</DialogTitle>
         <DialogContent>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              marginTop: '10px',
-              gap: '20px'
-            }}
-          >
+          <div className="flex flex-col gap-5 mt-2">
             <Autocomplete
               multiple
               id="instances"
@@ -146,53 +106,7 @@ function App() {
               options={filteredRegions}
               disabled={selectedInstances.length === 0} // instances 선택이 없으면 비활성화
             />
-            <FormControl fullWidth>
-              <FormLabel id="date-type-radio-group">Date Type</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="date-type-radio-group"
-                name="date-type-radio-group"
-                value={isStartDate}
-                onChange={(e) => setIsStartDate(e.target.value)}
-              >
-                <FormControlLabel
-                  value="start"
-                  control={<Radio />}
-                  label="Start and End Date"
-                />
-                <FormControlLabel
-                  value="day"
-                  control={<Radio />}
-                  label="Day (s)"
-                />
-              </RadioGroup>
-            </FormControl>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {isStartDate === 'start' ? (
-                <>
-                  <DatePicker
-                    label="Start Date"
-                    maxDate={endDate}
-                    slotProps={{
-                      field: { clearable: true }
-                    }}
-                    value={startDate}
-                    onChange={(newValue) => setStartDate(newValue)}
-                  />
-                  <DatePicker
-                    label="End Date"
-                    maxDate={endDate}
-                    slotProps={{
-                      field: { clearable: true }
-                    }}
-                    value={endDate}
-                    onChange={(newValue) => setEndDate(newValue)}
-                  />
-                </>
-              ) : (
-                <TextField id="before-days" label="Day" variant="outlined" />
-              )}
-            </LocalizationProvider>
+            <TextField id="before-days" label="Day" variant="outlined" />
             <Stack
               spacing={4}
               direction="row"
@@ -219,8 +133,8 @@ function App() {
           <Button>Submit</Button>
         </DialogActions>
       </Dialog>
-    </Base>
+    </div>
   );
 }
 
-export default App;
+export default Home;

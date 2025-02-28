@@ -1,8 +1,22 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) important;
+@import 'tailwindcss/utilities.css' layer(utilities) important;
+
+html {
+  width: 100%;
+  height: 100%;
+}
 body {
   margin: 0;
   display: flex;
   place-items: center;
+  width: 100%;
   min-width: 320px;
+  height: 100%;`
   min-height: 100vh;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+@theme {
+  --inset-shadow-vendor: inset 2px 2px 4px rgba(0,0,0,0.16); 
 }
