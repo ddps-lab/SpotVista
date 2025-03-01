@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 
-export default function RadioVendor({ vendors }) {
-  const [selectedVendor, setSelectedVendor] = useState('aws');
-
+export default function RadioVendor({
+  vendors,
+  selectedVendor,
+  setSelectedVendor
+}) {
   const handleClick = (vendor) => {
     setSelectedVendor(vendor);
     console.log('Selected Vendor:', vendor);
@@ -48,5 +49,7 @@ export default function RadioVendor({ vendors }) {
 }
 
 RadioVendor.propTypes = {
-  vendors: PropTypes.arrayOf(PropTypes.string).isRequired
+  vendors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedVendor: PropTypes.string.isRequired,
+  setSelectedVendor: PropTypes.func.isRequired
 };

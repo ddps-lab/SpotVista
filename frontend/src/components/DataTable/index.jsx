@@ -6,7 +6,12 @@ export default function DataTable({ vendor, rowdata }) {
   const { AWSColumns } = ColumnData();
   return (
     <div className="w-full h-full box-border">
-      <DataGrid columns={vendor === 'AWS' ? AWSColumns : []} rows={rowdata} />
+      <DataGrid
+        columns={vendor === 'aws' ? AWSColumns : []}
+        rows={rowdata}
+        className="text-center"
+        getRowClassName={() => `text-center`}
+      />
     </div>
   );
 }
