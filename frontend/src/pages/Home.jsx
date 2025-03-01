@@ -58,7 +58,8 @@ function Home() {
     setFilteredRegions([...new Set(regions)]);
   }, [selectedInstances, associations]);
 
-  const initFormData = () => {
+  const initQueryData = () => {
+    setQueryOpen(false);
     setSelectedInstances([]);
     setSelectedRegions([]);
     setFilteredRegions([]);
@@ -84,8 +85,7 @@ function Home() {
       }
     )
       .then((response) => {
-        setQueryOpen(false);
-        initFormData();
+        initQueryData();
         if (response.ok) {
           return response.json();
         }
@@ -136,7 +136,7 @@ function Home() {
         </div>
         <DataTable vendor={selectedVendor} rowdata={tablerowdata} />
       </div>
-      <Dialog fullWidth open={isQueryOpen} onClose={() => setQueryOpen(false)}>
+      <Dialog fullWidth open={isQueryOpen} onClose={initQueryData}>
         <DialogContent>
           <div className="flex flex-col gap-5 mt-2 p-8">
             <Autocomplete
