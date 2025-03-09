@@ -30,7 +30,7 @@ function Home() {
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [filteredRegions, setFilteredRegions] = useState([]);
 
-  const [tablerowdata, setTableRowData] = useState([]);
+  const [tableRowData, setTableRowData] = useState([]);
   const [days, setDays] = useState('');
   const [weight, setWeight] = useState(0.5);
 
@@ -134,7 +134,7 @@ function Home() {
             )}
           </Button>
         </div>
-        <DataTable vendor={selectedVendor} rowdata={tablerowdata} />
+        <DataTable vendor={selectedVendor} rowData={tableRowData} />
       </div>
       <Dialog fullWidth open={isQueryOpen} onClose={initQueryData}>
         <DialogContent>
