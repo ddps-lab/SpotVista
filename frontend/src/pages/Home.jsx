@@ -54,6 +54,7 @@ function Home() {
 
   const initQueryData = () => {
     setIsInitRender(true);
+    setTableRowData([]);
     setSelectedInstances([]);
     setSelectedRegions([]);
     setFilteredRegions([]);
@@ -61,7 +62,39 @@ function Home() {
     setWeight(0.5);
   };
 
+  const isVaildInpit = () => {
+    if (selectedInstances.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select at least one instance type.',
+        severity: 'error'
+      });
+      return false;
+    }
+    if (selectedRegions.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select at least one region.',
+        severity: 'error'
+      });
+      return false;
+    }
+    if (days === '') {
+      setSnackbar({
+        open: true,
+        message: 'Please enter the number of days.',
+        severity: 'error'
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = () => {
+    if (!isVaildInpit()) {
+      return;
+    }
+
     setQueryLoading(true);
     setIsInitRender(false);
 
