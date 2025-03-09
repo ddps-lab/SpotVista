@@ -253,6 +253,7 @@ function Home() {
                 vendor={selectedVendor}
                 rowData={tableRowData}
                 isInitRender={isInitRender}
+                isLoading={isQueryLoading}
               />
             </div>
           </div>
