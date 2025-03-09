@@ -6,7 +6,7 @@ const ColumnData = () => {
       headerName: 'InstanceType',
       headerClassName: 'text-center',
       headerAlign: 'center',
-      flex: 1,
+      flex: 0.9,
       align: 'center',
       valueGetter: (value) => {
         return value == -1 ? 'N/A' : value;
@@ -15,7 +15,7 @@ const ColumnData = () => {
     {
       field: 'Region',
       headerName: 'Region',
-      flex: 1,
+      flex: 0.9,
       headerClassName: 'text-center',
       headerAlign: 'center',
       align: 'center',
@@ -26,7 +26,7 @@ const ColumnData = () => {
     {
       field: 'AZ',
       headerName: 'AZ',
-      flex: 1,
+      flex: 0.8,
       description:
         'Availability Zone ID. For details, please refer to https://docs.aws.amazon.com/ram/latest/userguide/working-with-az-ids.html',
       headerClassName: 'text-center',
@@ -37,21 +37,8 @@ const ColumnData = () => {
       }
     },
     {
-      field: 'Weight',
-      headerName: 'Weight',
-      flex: 0.5,
-      description: 'Weight',
-      type: 'number',
-      headerClassName: 'text-center',
-      headerAlign: 'center',
-      align: 'center',
-      valueGetter: (value) => {
-        return value == -1 ? 'N/A' : value;
-      }
-    },
-    {
       field: 'SPS',
-      headerName: 'Availability',
+      headerName: 'SPS',
       flex: 0.8,
       description:
         'In AWS, it is Spot Placement Score. For details, please refer to https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-placement-score.html',
@@ -65,7 +52,7 @@ const ColumnData = () => {
     },
     {
       field: 'AvailabilityScore',
-      headerName: 'Availability Score',
+      headerName: 'SPS Score',
       flex: 0.8,
       description:
         'The maximum number of nodes whose Spot Placement Score (SPS) transitions from 2 to 1 denoted as T2',
@@ -94,6 +81,19 @@ const ColumnData = () => {
       headerName: 'Cost Score',
       type: 'number',
       flex: 0.8,
+      headerClassName: 'text-center',
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (value) => {
+        return value == -1 ? 'N/A' : value;
+      }
+    },
+    {
+      field: 'Weight',
+      headerName: 'Weight',
+      flex: 0.5,
+      description: 'Weight',
+      type: 'number',
       headerClassName: 'text-center',
       headerAlign: 'center',
       align: 'center',

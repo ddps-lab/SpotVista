@@ -5,7 +5,7 @@ export default function Header() {
         <img
           src="/logo.svg"
           alt="sandevistan"
-          className="w-90 select-none"
+          className="w-64 md:w-90 select-none"
           draggable="false"
         />
       </div>
