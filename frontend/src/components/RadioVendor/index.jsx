@@ -1,93 +1,55 @@
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 
-const Group = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 30px 0;
-`;
+export default function RadioVendor({
+  vendors,
+  selectedVendor,
+  setSelectedVendor
+}) {
+  const handleClick = (vendor) => {
+    setSelectedVendor(vendor);
+    console.log('Selected Vendor:', vendor);
+  };
 
-const Radio = styled(Button)`
-  width: 180px;
-  min-width: max-content !important;
-  border: none;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.26);
-  background: none;
-  flex-direction: column;
-  justify-content: space-between !important;
-  ${(props) =>
-    props.clicked === true &&
-    'box-shadow: inset 2px 2px 4px rgba(0,0,0,0.16); background:rgb(61,86,178, 0.1) !important;'}
-
-  > .vendor-icon {
-    width: 60px;
-  }
-
-  > .vendor-title {
-    color: #555;
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: none;
-    white-space: nowrap;
-    margin: 0 !important;
-  }
-`;
-
-export default function RadioVendor(props) {
   return (
-    <Group>
-      {props.vendors &&
-        props.vendors.map((vendor) => {
-          if (vendor === 'aws')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={true}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Amazon Web Services'}
-                />
-                <p className={'vendor-title'}>Amazon Web Services</p>
-              </Radio>
-            );
-          else if (vendor === 'azure')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={false}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Microsoft Azure'}
-                />
-                <p className={'vendor-title'}>Microsoft Azure</p>
-              </Radio>
-            );
-          else if (vendor === 'gcp')
-            return (
-              <Radio
-                onClick={() => {}}
-                clicked={false}
-                disabled={false}
-                key={`${vendor}-radio-button`}
-              >
-                <img
-                  className={'vendor-icon'}
-                  src={'/icons/' + vendor + '.png'}
-                  alt={'Google Cloud Platform'}
-                />
-                <p className={'vendor-title'}>Google Cloud Platform</p>
-              </Radio>
-            );
-        })}
-    </Group>
+    <div className="flex justify-center p-8 gap-8 box-border">
+      {vendors &&
+        vendors.map((vendor) => (
+          <Button
+            onClick={() => handleClick(vendor)}
+            className={`w-44 min-w-max border-none shadow-md bg-none flex flex-col justify-between ${
+              selectedVendor === vendor
+                ? 'inset-shadow-vendor bg-[rgba(61,86,178,0.1)]'
+                : ''
+            }`}
+            key={`${vendor}-radio-button`}
+          >
+            <img
+              className="w-15"
+              src={`/icons/${vendor}.png`}
+              alt={
+                vendor === 'aws'
+                  ? 'Amazon Web Services'
+                  : vendor === 'azure'
+                    ? 'Microsoft Azure'
+                    : 'Google Cloud Platform'
+              }
+            />
+            <p className="text-gray-700 text-sm font-normal normal-case whitespace-nowrap m-0">
+              {vendor === 'aws'
+                ? 'Amazon Web Services'
+                : vendor === 'azure'
+                  ? 'Microsoft Azure'
+                  : 'Google Cloud Platform'}
+            </p>
+          </Button>
+        ))}
+    </div>
   );
 }
+
+RadioVendor.propTypes = {
+  vendors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedVendor: PropTypes.string.isRequired,
+  setSelectedVendor: PropTypes.func.isRequired
+};

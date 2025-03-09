@@ -1,18 +1,22 @@
 import { DataGrid } from '@mui/x-data-grid';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import ColumnData from './columnsData';
 
-const Base = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  height: 100%;
-  box-sizing: border-box;
-`;
-
-export default function DataTable(props) {
-  const { vendor, rows } = props;
+export default function DataTable({ vendor, rowData }) {
+  const { AWSColumns } = ColumnData();
   return (
-    <Base>
-      <DataGrid columns={[]} rows={[]} />
-    </Base>
+    <div className="w-full h-full box-border">
+      <DataGrid
+        columns={vendor === 'aws' ? AWSColumns : []}
+        rows={rowData}
+        className="text-center"
+        getRowClassName={() => `text-center`}
+      />
+    </div>
   );
 }
+
+DataTable.propTypes = {
+  vendor: PropTypes.string.isRequired,
+  rowData: PropTypes.arrayOf(PropTypes.object).isRequired
+};
