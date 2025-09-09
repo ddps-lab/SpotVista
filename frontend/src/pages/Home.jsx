@@ -1,31 +1,25 @@
 import { useState, useEffect } from 'react';
 
-import RadioVendor from '../components/RadioVendor/index.jsx';
 import DataTable from '../components/DataTable/index.jsx';
 import {
   Autocomplete,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
   Slider,
-  Stack,
   TextField,
   Snackbar,
   Alert
 } from '@mui/material';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-const AVAILABLE_VENDORS = ['aws'];
+// const AVAILABLE_VENDORS = ['aws'];
 
 function Home() {
   dayjs.extend(utc);
   const [associations, setAssociations] = useState([]);
 
-  const [selectedVendor, setSelectedVendor] = useState('aws');
+  const [selectedVendor] = useState('aws');
   const [selectedInstances, setSelectedInstances] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [filteredRegions, setFilteredRegions] = useState([]);
@@ -34,8 +28,8 @@ function Home() {
   const [days, setDays] = useState('');
   const [weight, setWeight] = useState(0.5);
 
-  const [isQueryOpen, setQueryOpen] = useState(false);
   const [isQueryLoading, setQueryLoading] = useState(false);
+  const [isInitRender, setIsInitRender] = useState(true);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -59,7 +53,8 @@ function Home() {
   }, [selectedInstances, associations]);
 
   const initQueryData = () => {
-    setQueryOpen(false);
+    setIsInitRender(true);
+    setTableRowData([]);
     setSelectedInstances([]);
     setSelectedRegions([]);
     setFilteredRegions([]);
@@ -67,8 +62,41 @@ function Home() {
     setWeight(0.5);
   };
 
+  const isVaildInpit = () => {
+    if (selectedInstances.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select at least one instance type.',
+        severity: 'error'
+      });
+      return false;
+    }
+    if (selectedRegions.length === 0) {
+      setSnackbar({
+        open: true,
+        message: 'Please select at least one region.',
+        severity: 'error'
+      });
+      return false;
+    }
+    if (days === '') {
+      setSnackbar({
+        open: true,
+        message: 'Please enter the number of days.',
+        severity: 'error'
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = () => {
+    if (!isVaildInpit()) {
+      return;
+    }
+
     setQueryLoading(true);
+    setIsInitRender(false);
 
     const payload = {
       days: parseInt(days),
@@ -85,7 +113,6 @@ function Home() {
       }
     )
       .then((response) => {
-        initQueryData();
         if (response.ok) {
           return response.json();
         }
@@ -111,110 +138,127 @@ function Home() {
   };
 
   return (
-    <div className="w-full h-[calc(100%-6rem)] flex flex-col items-center py-8 box-border">
+    <div className="w-full h-[calc(100%-6rem)] flex flex-col items-center py-8 box-border bg-neutral-100">
       <div className="container flex flex-col items-center w-full h-full box-border">
-        <RadioVendor
-          vendors={AVAILABLE_VENDORS}
-          selectedVendor={selectedVendor}
-          setSelectedVendor={setSelectedVendor}
-        />
-        <div className="flex justify-end w-full mb-3 box-border">
-          <Button
-            variant="contained"
-            onClick={() => setQueryOpen(true)}
-            disabled={isQueryLoading}
-          >
-            {isQueryLoading ? (
-              <CircularProgress size={24} />
-            ) : (
-              <>
-                <SearchOutlinedIcon fontSize={'small'} />
-                Query
-              </>
-            )}
-          </Button>
-        </div>
-        <DataTable vendor={selectedVendor} rowData={tableRowData} />
-      </div>
-      <Dialog fullWidth open={isQueryOpen} onClose={initQueryData}>
-        <DialogContent>
-          <div className="flex flex-col gap-5 mt-2 p-8">
-            <Autocomplete
-              multiple
-              id="instances"
-              disableCloseOnSelect
-              filterSelectedOptions
-              getOptionLabel={(option) => option.name}
-              limitTags={2}
-              renderInput={(params) => (
-                <TextField {...params} label="Instances" />
-              )}
-              options={
-                associations.length > 0 && typeof associations[0] === 'object'
-                  ? Object.keys(associations[0]).map((key) => ({ name: key }))
-                  : []
-              }
-              getOptionDisabled={() =>
-                selectedInstances.length >= 3 ? true : false
-              }
-              onChange={(event, newValue) => setSelectedInstances(newValue)}
-            />
+        <div className="grid lg:grid-cols-4 items-center w-full h-full box-border lg:gap-4 gap-8 auto-rows-min lg:auto-rows-auto px-2">
+          <div className="bg-white rounded-2xl lg:h-full p-4">
+            <div>
+              <h2 className="text-xl text-neutral-700">Query Data</h2>
+              <div className="flex flex-col gap-5 mt-2">
+                <Autocomplete
+                  multiple
+                  id="instances"
+                  disableCloseOnSelect
+                  filterSelectedOptions
+                  value={selectedInstances}
+                  getOptionLabel={(option) => option.name}
+                  limitTags={3}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Instances" />
+                  )}
+                  options={
+                    associations.length > 0 &&
+                    typeof associations[0] === 'object'
+                      ? Object.keys(associations[0]).map((key) => ({
+                          name: key
+                        }))
+                      : []
+                  }
+                  getOptionDisabled={() =>
+                    selectedInstances.length >= 3 ? true : false
+                  }
+                  onChange={(event, newValue) => setSelectedInstances(newValue)}
+                />
+                <Autocomplete
+                  multiple
+                  id="regions"
+                  disableCloseOnSelect
+                  filterSelectedOptions
+                  value={selectedRegions}
+                  getOptionLabel={(option) => option}
+                  limitTags={3}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Regions" />
+                  )}
+                  options={filteredRegions}
+                  disabled={selectedInstances.length === 0}
+                  getOptionDisabled={() =>
+                    selectedRegions.length >= 3 ? true : false
+                  }
+                  onChange={(event, newValue) => setSelectedRegions(newValue)}
+                />
+                <TextField
+                  id="before-days"
+                  label="Day"
+                  variant="outlined"
+                  type="number"
+                  value={days}
+                  slotProps={{
+                    maxLength: 1,
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*'
+                  }}
+                  onChange={(e) => setDays(e.target.value)}
+                />
+                <div className="border-neutral-300 border rounded-md p-2">
+                  <label htmlFor="weight" className="text-neutral-600 text-sm">
+                    Weight
+                  </label>
+                  <Slider
+                    value={weight}
+                    className="text-amber-400"
+                    onChange={(event, newValue) => setWeight(newValue)}
+                    defaultValue={0.5}
+                    valueLabelDisplay="auto"
+                    step={0.1}
+                    marks
+                    min={0}
+                    max={1}
+                  />
+                  <div className="flex justify-between">
+                    <label className="text-neutral-600 text-xs">Cost</label>
+                    <label className="text-neutral-600 text-xs">
+                      Available
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <Button
+                onClick={handleSubmit}
+                disabled={isQueryLoading}
+                className="w-full bg-amber-400 hover:bg-amber-500 text-white  mb-2"
+              >
+                {isQueryLoading ? (
+                  <CircularProgress size={24} className="text-neutral-100" />
+                ) : (
+                  'Submit'
+                )}
+              </Button>
+              <Button
+                onClick={initQueryData}
+                disabled={isQueryLoading}
+                className="w-full bg-neutral-300 hover:bg-neutral-400 text-white"
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
 
-            <Autocomplete
-              multiple
-              id="regions"
-              disableCloseOnSelect
-              filterSelectedOptions
-              getOptionLabel={(option) => option}
-              limitTags={3}
-              renderInput={(params) => (
-                <TextField {...params} label="Regions" />
-              )}
-              options={filteredRegions}
-              disabled={selectedInstances.length === 0}
-              getOptionDisabled={() =>
-                selectedRegions.length >= 3 ? true : false
-              }
-              onChange={(event, newValue) => setSelectedRegions(newValue)}
-            />
-            <TextField
-              id="before-days"
-              label="Day"
-              variant="outlined"
-              type="number"
-              value={days}
-              onChange={(e) => setDays(e.target.value)}
-            />
-            <Stack
-              spacing={4}
-              direction="row"
-              sx={{ alignItems: 'center', mb: 1 }}
-            >
-              <label>Cost</label>
-              <Slider
-                value={weight}
-                onChange={(event, newValue) => setWeight(newValue)}
-                defaultValue={0.5}
-                valueLabelDisplay="auto"
-                step={0.1}
-                marks
-                min={0}
-                max={1}
-                aria-label="Volume"
+          <div className="lg:col-span-3 lg:h-full bg-white rounded-2xl overflow-x-hidden py-4 flex flex-col">
+            <h2 className="text-xl text-neutral-700 px-4">Result Data</h2>
+            <div className="overflow-y-scroll flex-1">
+              <DataTable
+                vendor={selectedVendor}
+                rowData={tableRowData}
+                isInitRender={isInitRender}
+                isLoading={isQueryLoading}
               />
-              <label>Available</label>
-            </Stack>
+            </div>
           </div>
-        </DialogContent>
-        <DialogActions>
-          <div className="p-2">
-            <Button onClick={() => setQueryOpen(false)}>Cancel</Button>
-            <Button onClick={handleSubmit} disabled={isQueryLoading}>
-              {isQueryLoading ? <CircularProgress size={24} /> : 'Submit'}
-            </Button>
-          </div>
-        </DialogActions>
-      </Dialog>
+        </div>
+      </div>
 
       <Snackbar
         open={snackbar.open}
