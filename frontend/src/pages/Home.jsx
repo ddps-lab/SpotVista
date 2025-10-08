@@ -38,7 +38,7 @@ function Home() {
 
   useEffect(() => {
     fetch(
-      `https://spotlake.s3.us-west-2.amazonaws.com/query-selector/associated/association_${selectedVendor}.json`
+      `https://d26bk4799jlxhe.cloudfront.net/query-selector/associated/association_${selectedVendor}.json`
     )
       .then((res) => res.json())
       .then((data) => setAssociations(data))
