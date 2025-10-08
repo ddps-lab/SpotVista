@@ -4,7 +4,7 @@ export default function Header() {
       <div className="w-full max-w-screen-xl px-5 flex flex-col">
         <img
           src="/logo.svg"
-          alt="sandevistan"
+          alt="SpotVista"
           className="w-64 md:w-90 select-none"
           draggable="false"
         />
