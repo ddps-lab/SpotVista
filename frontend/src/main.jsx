@@ -2,7 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { StyledEngineProvider } from '@mui/material/styles';
 import Router from './routes/index.jsx';
 
 const rootElement = document.getElementById('root');
@@ -44,10 +43,8 @@ const theme = createTheme({
 
 root.render(
   <StrictMode>
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <Router />
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={theme}>
+      <Router />
+    </ThemeProvider>
   </StrictMode>
 );
