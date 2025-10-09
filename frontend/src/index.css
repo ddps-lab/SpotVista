@@ -30,12 +30,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  background: linear-gradient(180deg, #facc15, #eab308);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f59e0b, #d97706);
+  background: linear-gradient(180deg, #eab308, #ca8a04);
 }
 
 @theme {
@@ -50,7 +50,7 @@ body {
 
   /* Focus styles for better accessibility */
   *:focus-visible {
-    outline: 2px solid #f59e0b;
+    outline: 2px solid #eab308;
     outline-offset: 2px;
   }
 }

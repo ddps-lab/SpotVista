@@ -144,7 +144,7 @@ function Home() {
           <div className="bg-white rounded-2xl lg:h-full p-4 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
             <div>
               <div className="flex items-center gap-2 mb-4 border-b border-gray-100">
-                <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 <h2 className="text-lg font-bold text-gray-800">Query Configuration</h2>
@@ -169,10 +169,10 @@ function Home() {
                         sx={{
                           '& .MuiOutlinedInput-root': {
                             '&:hover fieldset': {
-                              borderColor: '#fbbf24',
+                              borderColor: '#facc15',
                             },
                             '&.Mui-focused fieldset': {
-                              borderColor: '#f59e0b',
+                              borderColor: '#eab308',
                             },
                           },
                         }}
@@ -211,10 +211,10 @@ function Home() {
                         sx={{
                           '& .MuiOutlinedInput-root': {
                             '&:hover fieldset': {
-                              borderColor: '#fbbf24',
+                              borderColor: '#facc15',
                             },
                             '&.Mui-focused fieldset': {
-                              borderColor: '#f59e0b',
+                              borderColor: '#eab308',
                             },
                           },
                         }}
@@ -246,10 +246,10 @@ function Home() {
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         '&:hover fieldset': {
-                          borderColor: '#fbbf24',
+                          borderColor: '#facc15',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#f59e0b',
+                          borderColor: '#eab308',
                         },
                       },
                     }}
@@ -264,15 +264,15 @@ function Home() {
                     <Slider
                       value={weight}
                       sx={{
-                        color: '#f59e0b',
+                        color: '#eab308',
                         '& .MuiSlider-thumb': {
-                          backgroundColor: '#f59e0b',
+                          backgroundColor: '#eab308',
                           '&:hover': {
-                            backgroundColor: '#d97706',
+                            backgroundColor: '#ca8a04',
                           },
                         },
                         '& .MuiSlider-track': {
-                          backgroundColor: '#f59e0b',
+                          backgroundColor: '#eab308',
                         },
                         '& .MuiSlider-rail': {
                           backgroundColor: '#e5e7eb',
@@ -301,17 +301,17 @@ function Home() {
                 variant="contained"
                 fullWidth
                 sx={{
-                  background: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)',
+                  background: 'linear-gradient(135deg, #eab308 0%, #facc15 100%)',
                   color: 'white',
                   fontWeight: 'bold',
                   padding: '12px',
                   borderRadius: '10px',
                   textTransform: 'none',
                   fontSize: '16px',
-                  boxShadow: '0 4px 14px rgba(245, 158, 11, 0.3)',
+                  boxShadow: '0 4px 14px rgba(234, 179, 8, 0.3)',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #d97706 0%, #c2410c 100%)',
-                    boxShadow: '0 6px 20px rgba(245, 158, 11, 0.4)',
+                    background: 'linear-gradient(135deg, #ca8a04 0%, #eab308 100%)',
+                    boxShadow: '0 6px 20px rgba(234, 179, 8, 0.4)',
                   },
                   '&:disabled': {
                     background: '#e5e7eb',
@@ -359,7 +359,7 @@ function Home() {
           <div className="lg:col-span-3 lg:h-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-x-hidden p-4 flex flex-col hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <h2 className="text-lg font-bold text-gray-800">Analysis Results</h2>
