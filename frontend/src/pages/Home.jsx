@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 import DataTable from '../components/DataTable/index.jsx';
 import {
   Autocomplete,
@@ -12,20 +11,24 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-
-// const AVAILABLE_VENDORS = ['aws'];
+import './Home.css';
 
 function Home() {
   dayjs.extend(utc);
   const [associations, setAssociations] = useState([]);
 
   const [selectedVendor] = useState('aws');
-  const [selectedInstances, setSelectedInstances] = useState([]);
-  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [selectedInstances, setSelectedInstances] = useState([
+    { name: 'c7i.xlarge' },
+    { name: 'm7i.xlarge' },
+    { name: 'r7i.xlarge' }
+  ]);
+  const DEFAULT_REGIONS = ['us-east-1', 'us-west-2', 'ap-northeast-2'];
+  const [selectedRegions, setSelectedRegions] = useState(DEFAULT_REGIONS);
   const [filteredRegions, setFilteredRegions] = useState([]);
 
   const [tableRowData, setTableRowData] = useState([]);
-  const [days, setDays] = useState('');
+  const [days, setDays] = useState('3');
   const [weight, setWeight] = useState(0.5);
 
   const [isQueryLoading, setQueryLoading] = useState(false);
@@ -47,18 +50,24 @@ function Home() {
 
   useEffect(() => {
     const regions = selectedInstances
-      .map((instance) => associations[0][instance.name]?.Region || [])
+      .map((instance) => associations[0]?.[instance.name]?.Region || [])
       .flat();
-    setFilteredRegions([...new Set(regions)]);
+    const uniqueRegions = [...new Set(regions)];
+    uniqueRegions.sort((a, b) => a.localeCompare(b));
+    setFilteredRegions(uniqueRegions);
   }, [selectedInstances, associations]);
 
   const initQueryData = () => {
     setIsInitRender(true);
     setTableRowData([]);
-    setSelectedInstances([]);
-    setSelectedRegions([]);
+    setSelectedInstances([
+      { name: 'c7i.xlarge' },
+      { name: 'm7i.xlarge' },
+      { name: 'r7i.xlarge' }
+    ]);
+    setSelectedRegions(DEFAULT_REGIONS);
     setFilteredRegions([]);
-    setDays('');
+    setDays('3');
     setWeight(0.5);
   };
 
@@ -140,7 +149,7 @@ function Home() {
   return (
     <div className="w-full min-h-[calc(100vh-5rem)] flex flex-col items-center py-6 box-border bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container flex flex-col items-center w-full h-full box-border">
-        <div className="grid lg:grid-cols-4 items-center w-full h-full box-border lg:gap-6 gap-8 auto-rows-min lg:auto-rows-auto px-4">
+        <div className="grid lg:grid-cols-5 items-center w-full h-full box-border lg:gap-6 gap-8 auto-rows-min lg:auto-rows-auto px-4">
           <div className="bg-white rounded-2xl lg:h-full p-4 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
             <div>
               <div className="flex items-center gap-2 mb-4 border-b border-gray-100">
@@ -158,24 +167,16 @@ function Home() {
                     disableCloseOnSelect
                     filterSelectedOptions
                     value={selectedInstances}
+                    isOptionEqualToValue={(option, value) => option.name === value.name}
                     getOptionLabel={(option) => option.name}
-                    limitTags={2}
+                    limitTags={3}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        placeholder="Select up to 3 instances"
+                        placeholder={selectedInstances.length > 0 ? '' : 'Select up to 3 instances'}
                         variant="outlined"
                         size="small"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            '&:hover fieldset': {
-                              borderColor: '#facc15',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#eab308',
-                            },
-                          },
-                        }}
+                        className="custom-textfield"
                       />
                     )}
                     options={
@@ -201,23 +202,14 @@ function Home() {
                     filterSelectedOptions
                     value={selectedRegions}
                     getOptionLabel={(option) => option}
-                    limitTags={2}
+                    limitTags={3}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        placeholder="Select up to 3 regions"
+                        placeholder={selectedRegions.length > 0 ? '' : 'Select up to 3 regions'}
                         variant="outlined"
                         size="small"
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            '&:hover fieldset': {
-                              borderColor: '#facc15',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#eab308',
-                            },
-                          },
-                        }}
+                        className="custom-textfield"
                       />
                     )}
                     options={filteredRegions}
@@ -243,16 +235,7 @@ function Home() {
                       inputMode: 'numeric',
                       pattern: '[0-9]*'
                     }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                          borderColor: '#facc15',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#eab308',
-                        },
-                      },
-                    }}
+                    className="custom-textfield"
                     onChange={(e) => setDays(e.target.value)}
                   />
                 </div>
@@ -263,21 +246,7 @@ function Home() {
                   <div className="border border-gray-300 rounded-md p-3">
                     <Slider
                       value={weight}
-                      sx={{
-                        color: '#eab308',
-                        '& .MuiSlider-thumb': {
-                          backgroundColor: '#eab308',
-                          '&:hover': {
-                            backgroundColor: '#ca8a04',
-                          },
-                        },
-                        '& .MuiSlider-track': {
-                          backgroundColor: '#eab308',
-                        },
-                        '& .MuiSlider-rail': {
-                          backgroundColor: '#e5e7eb',
-                        },
-                      }}
+                      className="custom-slider"
                       onChange={(_, newValue) => setWeight(newValue)}
                       defaultValue={0.5}
                       valueLabelDisplay="auto"
@@ -300,27 +269,12 @@ function Home() {
                 disabled={isQueryLoading}
                 variant="contained"
                 fullWidth
-                sx={{
-                  background: 'linear-gradient(135deg, #eab308 0%, #facc15 100%)',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  padding: '12px',
-                  borderRadius: '10px',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  boxShadow: '0 4px 14px rgba(234, 179, 8, 0.3)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #ca8a04 0%, #eab308 100%)',
-                    boxShadow: '0 6px 20px rgba(234, 179, 8, 0.4)',
-                  },
-                  '&:disabled': {
-                    background: '#e5e7eb',
-                    color: '#9ca3af',
-                  }
-                }}
+                className="custom-button-primary"
               >
                 {isQueryLoading ? (
-                  <CircularProgress size={24} sx={{ color: 'white' }} />
+                  <div className="text-white">
+                    <CircularProgress size={24} color="inherit" />
+                  </div>
                 ) : (
                   <>
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,18 +289,7 @@ function Home() {
                 disabled={isQueryLoading}
                 variant="outlined"
                 fullWidth
-                sx={{
-                  borderColor: '#d1d5db',
-                  color: '#6b7280',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  textTransform: 'none',
-                  fontSize: '14px',
-                  '&:hover': {
-                    borderColor: '#9ca3af',
-                    backgroundColor: '#f9fafb',
-                  },
-                }}
+                className="custom-button-secondary"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -356,7 +299,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="lg:col-span-3 lg:h-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-x-hidden p-4 flex flex-col hover:shadow-2xl transition-shadow duration-300">
+          <div className="lg:col-span-4 lg:h-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-x-hidden p-4 flex flex-col hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -394,7 +337,7 @@ function Home() {
         <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
-          sx={{ width: '100%' }}
+          className="w-full"
         >
           {snackbar.message}
         </Alert>
