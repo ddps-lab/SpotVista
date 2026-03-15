@@ -39,7 +39,7 @@ const ColumnData = () => {
     {
       field: 'SPS',
       headerName: 'SPS',
-      flex: 0.8,
+      flex: 0.5,
       description:
         'In AWS, it is Spot Placement Score. For details, please refer to https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-placement-score.html',
       type: 'number',
@@ -53,7 +53,7 @@ const ColumnData = () => {
     {
       field: 'T3',
       headerName: 'T3',
-      flex: 0.8,
+      flex: 0.5,
       description: 'Target capacity score (T3) from SpotVista query response.',
       type: 'number',
       headerClassName: 'text-center',
@@ -65,8 +65,8 @@ const ColumnData = () => {
     },
     {
       field: 'AvailabilityScore',
-      headerName: 'SPS Score',
-      flex: 0.8,
+      headerName: 'Availability Score',
+      flex: 0.9,
       description:
         'The maximum number of nodes whose Spot Placement Score (SPS) transitions from 2 to 1 denoted as T2',
       type: 'number',
