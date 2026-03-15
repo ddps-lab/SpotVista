@@ -51,6 +51,19 @@ const ColumnData = () => {
       }
     },
     {
+      field: 'T3',
+      headerName: 'T3',
+      flex: 0.8,
+      description: 'Target capacity score (T3) from SpotVista query response.',
+      type: 'number',
+      headerClassName: 'text-center',
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (value) => {
+        return value == -1 ? 'N/A' : value;
+      }
+    },
+    {
       field: 'AvailabilityScore',
       headerName: 'SPS Score',
       flex: 0.8,

@@ -114,13 +114,10 @@ function Home() {
       weight
     };
 
-    fetch(
-      'https://2avbkrwyq5.execute-api.us-west-2.amazonaws.com/default/sandevistan_api',
-      {
+    fetch('https://spotvista.ddps.cloud/api/query', {
         method: 'POST',
         body: JSON.stringify(payload)
-      }
-    )
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
