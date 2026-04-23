@@ -7,8 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+.pnp
+.pnp.*
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Vite (legacy)
+dist
 dist-ssr
+
+# env / local
+.env
+.env*.local
 *.local
 
 # Editor directories and files
