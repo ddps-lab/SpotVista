@@ -1,0 +1,658 @@
+[
+  {
+    "Ts": 1,
+    "sample_points": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ],
+    "cycle_len": 50,
+    "n_measurements": 44890,
+    "MAE": 3.877389
+  },
+  {
+    "Ts": 2,
+    "sample_points": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50
+    ],
+    "cycle_len": 26,
+    "n_measurements": 46498,
+    "MAE": 2.560777
+  },
+  {
+    "Ts": 3,
+    "sample_points": [
+      1,
+      3,
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      24,
+      27,
+      30,
+      33,
+      36,
+      39,
+      42,
+      45,
+      48
+    ],
+    "cycle_len": 17,
+    "n_measurements": 47101,
+    "MAE": 2.077939
+  },
+  {
+    "Ts": 4,
+    "sample_points": [
+      1,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44,
+      48
+    ],
+    "cycle_len": 13,
+    "n_measurements": 47369,
+    "MAE": 2.059596
+  },
+  {
+    "Ts": 5,
+    "sample_points": [
+      1,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+    ],
+    "cycle_len": 11,
+    "n_measurements": 47503,
+    "MAE": 2.037703
+  },
+  {
+    "Ts": 6,
+    "sample_points": [
+      1,
+      6,
+      12,
+      18,
+      24,
+      30,
+      36,
+      42,
+      48
+    ],
+    "cycle_len": 9,
+    "n_measurements": 47637,
+    "MAE": 2.238302
+  },
+  {
+    "Ts": 7,
+    "sample_points": [
+      1,
+      7,
+      14,
+      21,
+      28,
+      35,
+      42,
+      49
+    ],
+    "cycle_len": 8,
+    "n_measurements": 47704,
+    "MAE": 2.389485
+  },
+  {
+    "Ts": 8,
+    "sample_points": [
+      1,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48
+    ],
+    "cycle_len": 7,
+    "n_measurements": 47771,
+    "MAE": 2.619623
+  },
+  {
+    "Ts": 9,
+    "sample_points": [
+      1,
+      9,
+      18,
+      27,
+      36,
+      45
+    ],
+    "cycle_len": 6,
+    "n_measurements": 47838,
+    "MAE": 2.92784
+  },
+  {
+    "Ts": 10,
+    "sample_points": [
+      1,
+      10,
+      20,
+      30,
+      40,
+      50
+    ],
+    "cycle_len": 6,
+    "n_measurements": 47838,
+    "MAE": 2.88852
+  },
+  {
+    "Ts": 11,
+    "sample_points": [
+      1,
+      11,
+      22,
+      33,
+      44
+    ],
+    "cycle_len": 5,
+    "n_measurements": 47905,
+    "MAE": 3.351362
+  },
+  {
+    "Ts": 12,
+    "sample_points": [
+      1,
+      12,
+      24,
+      36,
+      48
+    ],
+    "cycle_len": 5,
+    "n_measurements": 47905,
+    "MAE": 3.367582
+  },
+  {
+    "Ts": 13,
+    "sample_points": [
+      1,
+      13,
+      26,
+      39
+    ],
+    "cycle_len": 4,
+    "n_measurements": 47972,
+    "MAE": 4.025077
+  },
+  {
+    "Ts": 14,
+    "sample_points": [
+      1,
+      14,
+      28,
+      42
+    ],
+    "cycle_len": 4,
+    "n_measurements": 47972,
+    "MAE": 4.070458
+  },
+  {
+    "Ts": 15,
+    "sample_points": [
+      1,
+      15,
+      30,
+      45
+    ],
+    "cycle_len": 4,
+    "n_measurements": 47972,
+    "MAE": 4.134495
+  },
+  {
+    "Ts": 16,
+    "sample_points": [
+      1,
+      16,
+      32,
+      48
+    ],
+    "cycle_len": 4,
+    "n_measurements": 47972,
+    "MAE": 4.159155
+  },
+  {
+    "Ts": 17,
+    "sample_points": [
+      1,
+      17,
+      34
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 4.985366
+  },
+  {
+    "Ts": 18,
+    "sample_points": [
+      1,
+      18,
+      36
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 4.973209
+  },
+  {
+    "Ts": 19,
+    "sample_points": [
+      1,
+      19,
+      38
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 4.990778
+  },
+  {
+    "Ts": 20,
+    "sample_points": [
+      1,
+      20,
+      40
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.025708
+  },
+  {
+    "Ts": 21,
+    "sample_points": [
+      1,
+      21,
+      42
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.073211
+  },
+  {
+    "Ts": 22,
+    "sample_points": [
+      1,
+      22,
+      44
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.077166
+  },
+  {
+    "Ts": 23,
+    "sample_points": [
+      1,
+      23,
+      46
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.098149
+  },
+  {
+    "Ts": 24,
+    "sample_points": [
+      1,
+      24,
+      48
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.132018
+  },
+  {
+    "Ts": 25,
+    "sample_points": [
+      1,
+      25,
+      50
+    ],
+    "cycle_len": 3,
+    "n_measurements": 48039,
+    "MAE": 5.19938
+  },
+  {
+    "Ts": 26,
+    "sample_points": [
+      1,
+      26
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.496632
+  },
+  {
+    "Ts": 27,
+    "sample_points": [
+      1,
+      27
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.530661
+  },
+  {
+    "Ts": 28,
+    "sample_points": [
+      1,
+      28
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.559016
+  },
+  {
+    "Ts": 29,
+    "sample_points": [
+      1,
+      29
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.592275
+  },
+  {
+    "Ts": 30,
+    "sample_points": [
+      1,
+      30
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.612585
+  },
+  {
+    "Ts": 31,
+    "sample_points": [
+      1,
+      31
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.638216
+  },
+  {
+    "Ts": 32,
+    "sample_points": [
+      1,
+      32
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.651686
+  },
+  {
+    "Ts": 33,
+    "sample_points": [
+      1,
+      33
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.659835
+  },
+  {
+    "Ts": 34,
+    "sample_points": [
+      1,
+      34
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.668004
+  },
+  {
+    "Ts": 35,
+    "sample_points": [
+      1,
+      35
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.658338
+  },
+  {
+    "Ts": 36,
+    "sample_points": [
+      1,
+      36
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.652206
+  },
+  {
+    "Ts": 37,
+    "sample_points": [
+      1,
+      37
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.675799
+  },
+  {
+    "Ts": 38,
+    "sample_points": [
+      1,
+      38
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.707978
+  },
+  {
+    "Ts": 39,
+    "sample_points": [
+      1,
+      39
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.751424
+  },
+  {
+    "Ts": 40,
+    "sample_points": [
+      1,
+      40
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.765497
+  },
+  {
+    "Ts": 41,
+    "sample_points": [
+      1,
+      41
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.796948
+  },
+  {
+    "Ts": 42,
+    "sample_points": [
+      1,
+      42
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.816593
+  },
+  {
+    "Ts": 43,
+    "sample_points": [
+      1,
+      43
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.832786
+  },
+  {
+    "Ts": 44,
+    "sample_points": [
+      1,
+      44
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.839771
+  },
+  {
+    "Ts": 45,
+    "sample_points": [
+      1,
+      45
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.872864
+  },
+  {
+    "Ts": 46,
+    "sample_points": [
+      1,
+      46
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.874402
+  },
+  {
+    "Ts": 47,
+    "sample_points": [
+      1,
+      47
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.888787
+  },
+  {
+    "Ts": 48,
+    "sample_points": [
+      1,
+      48
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.91606
+  },
+  {
+    "Ts": 49,
+    "sample_points": [
+      1,
+      49
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.961668
+  },
+  {
+    "Ts": 50,
+    "sample_points": [
+      1,
+      50
+    ],
+    "cycle_len": 2,
+    "n_measurements": 48106,
+    "MAE": 6.98468
+  }
+]

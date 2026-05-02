@@ -46,3 +46,18 @@ node_modules/
 # Editor directories and files
 .vscode/
 .idea/
+
+# Large data files exceeding GitHub's 100MB hard limit
+figures/common/data/t2t3df_08.csv
+figures/common/data/plotdf_08.csv
+figures/common/data/plotdf_08_processed.csv
+figures/fig02_as_explanation/data/maxinstance.csv
+figures/fig04_dataset_collection/data/bar_data/ground_truth.csv
+figures/fig04_dataset_collection/data/bar_data/usqs.csv
+figures/fig05_usqs_step_size/data/temporal_error_full.csv
+figures/fig14_delta_as_window/data/raw_box_period1_full.csv
+figures/fig14_delta_as_window/data/raw_box_period2_full.csv
+figures/fig14_delta_as_window/data/raw_box_period3_full.csv
+figures/fig14_delta_as_window/data/raw_box_period4_full.csv
+figures/fig15_t3_t2_correlation/data/maxinstance2.csv
+figures/fig15_t3_t2_correlation/data/maxinstance3.csv

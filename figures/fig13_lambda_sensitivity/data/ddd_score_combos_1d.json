@@ -1,0 +1,555 @@
+[
+  {
+    "InstanceType": "c4.large",
+    "AZ": "apse1-az3",
+    "combo_start": "2024-09-13 06:10:00",
+    "combo_end": "2024-09-15 00:20:00",
+    "rows": 134
+  },
+  {
+    "InstanceType": "c5a.large",
+    "AZ": "aps1-az2",
+    "combo_start": "2024-10-01 14:20:00",
+    "combo_end": "2024-10-02 09:50:00",
+    "rows": 48
+  },
+  {
+    "InstanceType": "c5ad.large",
+    "AZ": "use1-az1",
+    "combo_start": "2024-09-23 13:10:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 151
+  },
+  {
+    "InstanceType": "c5ad.large",
+    "AZ": "use1-az6",
+    "combo_start": "2024-09-23 13:10:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 148
+  },
+  {
+    "InstanceType": "c5d.large",
+    "AZ": "apne3-az2",
+    "combo_start": "2024-09-29 14:30:00",
+    "combo_end": "2024-09-30 13:30:00",
+    "rows": 112
+  },
+  {
+    "InstanceType": "c6a.large",
+    "AZ": "apne1-az1",
+    "combo_start": "2024-09-23 12:50:00",
+    "combo_end": "2024-09-24 14:00:00",
+    "rows": 116
+  },
+  {
+    "InstanceType": "c6a.large",
+    "AZ": "apne1-az4",
+    "combo_start": "2024-09-23 12:50:00",
+    "combo_end": "2024-09-24 14:00:00",
+    "rows": 114
+  },
+  {
+    "InstanceType": "c6a.large",
+    "AZ": "euw2-az2",
+    "combo_start": "2024-10-01 14:20:00",
+    "combo_end": "2024-10-02 08:00:00",
+    "rows": 76
+  },
+  {
+    "InstanceType": "c6g.large",
+    "AZ": "usw2-az3",
+    "combo_start": "2024-09-23 13:10:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 135
+  },
+  {
+    "InstanceType": "c6g.large",
+    "AZ": "usw2-az4",
+    "combo_start": "2024-09-23 13:00:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 152
+  },
+  {
+    "InstanceType": "c6gd.large",
+    "AZ": "euc1-az2",
+    "combo_start": "2024-09-13 06:10:00",
+    "combo_end": "2024-09-15 03:50:00",
+    "rows": 195
+  },
+  {
+    "InstanceType": "c6i.large",
+    "AZ": "cac1-az1",
+    "combo_start": "2024-09-29 14:30:00",
+    "combo_end": "2024-09-30 12:20:00",
+    "rows": 108
+  },
+  {
+    "InstanceType": "c6i.large",
+    "AZ": "euc1-az1",
+    "combo_start": "2024-09-23 14:50:00",
+    "combo_end": "2024-09-24 14:00:00",
+    "rows": 93
+  },
+  {
+    "InstanceType": "c6i.large",
+    "AZ": "euc1-az2",
+    "combo_start": "2024-09-23 16:20:00",
+    "combo_end": "2024-09-24 11:30:00",
+    "rows": 74
+  },
+  {
+    "InstanceType": "c6i.xlarge",
+    "AZ": "cac1-az4",
+    "combo_start": "2024-09-25 17:20:00",
+    "combo_end": "2024-09-26 15:40:00",
+    "rows": 117
+  },
+  {
+    "InstanceType": "c7a.large",
+    "AZ": "apne1-az1",
+    "combo_start": "2024-09-13 06:10:00",
+    "combo_end": "2024-09-15 05:10:00",
+    "rows": 206
+  },
+  {
+    "InstanceType": "c7a.large",
+    "AZ": "eun1-az1",
+    "combo_start": "2024-10-08 03:40:00",
+    "combo_end": "2024-10-09 04:50:00",
+    "rows": 108
+  },
+  {
+    "InstanceType": "c7a.large",
+    "AZ": "euw1-az1",
+    "combo_start": "2024-10-08 03:40:00",
+    "combo_end": "2024-10-09 05:00:00",
+    "rows": 116
+  },
+  {
+    "InstanceType": "c7a.large",
+    "AZ": "use1-az2",
+    "combo_start": "2024-09-13 06:10:00",
+    "combo_end": "2024-09-15 06:20:00",
+    "rows": 170
+  },
+  {
+    "InstanceType": "c7a.xlarge",
+    "AZ": "usw2-az2",
+    "combo_start": "2024-09-25 17:20:00",
+    "combo_end": "2024-09-26 17:30:00",
+    "rows": 146
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "aps1-az2",
+    "combo_start": "2024-10-06 06:40:00",
+    "combo_end": "2024-10-07 07:00:00",
+    "rows": 147
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "aps1-az3",
+    "combo_start": "2024-09-25 17:20:00",
+    "combo_end": "2024-09-26 17:30:00",
+    "rows": 134
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "apse1-az2",
+    "combo_start": "2024-10-06 06:40:00",
+    "combo_end": "2024-10-07 06:50:00",
+    "rows": 133
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "apse2-az3",
+    "combo_start": "2024-10-09 15:00:00",
+    "combo_end": "2024-10-09 23:50:00",
+    "rows": 42
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "eun1-az2",
+    "combo_start": "2024-10-06 06:50:00",
+    "combo_end": "2024-10-07 07:00:00",
+    "rows": 124
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "use2-az2",
+    "combo_start": "2024-10-09 15:00:00",
+    "combo_end": "2024-10-09 23:50:00",
+    "rows": 54
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "usw1-az1",
+    "combo_start": "2024-10-09 15:00:00",
+    "combo_end": "2024-10-09 23:50:00",
+    "rows": 44
+  },
+  {
+    "InstanceType": "c7g.large",
+    "AZ": "usw2-az2",
+    "combo_start": "2024-10-09 15:00:00",
+    "combo_end": "2024-10-09 23:50:00",
+    "rows": 54
+  },
+  {
+    "InstanceType": "c7gd.large",
+    "AZ": "use1-az5",
+    "combo_start": "2024-10-01 14:20:00",
+    "combo_end": "2024-10-02 15:00:00",
+    "rows": 149
+  },
+  {
+    "InstanceType": "c7i.2xlarge",
+    "AZ": "sae1-az2",
+    "combo_start": "2024-10-05 15:00:00",
+    "combo_end": "2024-10-07 04:40:00",
+    "rows": 227
+  },
+  {
+    "InstanceType": "c7i.2xlarge",
+    "AZ": "use1-az4",
+    "combo_start": "2024-10-05 15:00:00",
+    "combo_end": "2024-10-07 04:40:00",
+    "rows": 227
+  },
+  {
+    "InstanceType": "c7i.2xlarge",
+    "AZ": "usw2-az1",
+    "combo_start": "2024-10-05 15:00:00",
+    "combo_end": "2024-10-07 04:40:00",
+    "rows": 227
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apne1-az1",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 22:40:00",
+    "rows": 138
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apne1-az2",
+    "combo_start": "2024-10-09 15:00:00",
+    "combo_end": "2024-10-09 23:50:00",
+    "rows": 51
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apne1-az4",
+    "combo_start": "2024-10-06 06:40:00",
+    "combo_end": "2024-10-09 04:50:00",
+    "rows": 295
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apne2-az2",
+    "combo_start": "2024-10-06 06:40:00",
+    "combo_end": "2024-10-07 07:00:00",
+    "rows": 147
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apne2-az3",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 22:50:00",
+    "rows": 164
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "aps1-az1",
+    "combo_start": "2024-10-03 07:40:00",
+    "combo_end": "2024-10-04 09:50:00",
+    "rows": 110
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "aps1-az3",
+    "combo_start": "2024-09-30 02:30:00",
+    "combo_end": "2024-10-01 03:50:00",
+    "rows": 131
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apse1-az1",
+    "combo_start": "2024-09-23 13:10:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 144
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apse1-az2",
+    "combo_start": "2024-09-23 13:10:00",
+    "combo_end": "2024-09-24 14:10:00",
+    "rows": 151
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apse1-az3",
+    "combo_start": "2024-10-08 03:40:00",
+    "combo_end": "2024-10-09 04:50:00",
+    "rows": 149
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apse2-az1",
+    "combo_start": "2024-10-03 07:40:00",
+    "combo_end": "2024-10-04 09:50:00",
+    "rows": 131
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "apse2-az2",
+    "combo_start": "2024-09-30 02:40:00",
+    "combo_end": "2024-10-01 03:40:00",
+    "rows": 127
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "cac1-az1",
+    "combo_start": "2024-10-03 07:40:00",
+    "combo_end": "2024-10-04 09:30:00",
+    "rows": 86
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "cac1-az2",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 23:00:00",
+    "rows": 161
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "euc1-az2",
+    "combo_start": "2024-09-25 17:20:00",
+    "combo_end": "2024-09-26 17:30:00",
+    "rows": 146
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "euc1-az3",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 22:50:00",
+    "rows": 192
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "eun1-az1",
+    "combo_start": "2024-09-30 02:40:00",
+    "combo_end": "2024-10-01 03:40:00",
+    "rows": 138
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "eun1-az2",
+    "combo_start": "2024-10-03 07:40:00",
+    "combo_end": "2024-10-04 09:40:00",
+    "rows": 92
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "eun1-az3",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 22:50:00",
+    "rows": 137
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "euw1-az3",
+    "combo_start": "2024-10-06 06:50:00",
+    "combo_end": "2024-10-07 07:00:00",
+    "rows": 127
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "euw3-az3",
+    "combo_start": "2024-10-01 15:00:00",
+    "combo_end": "2024-10-02 22:50:00",
+    "rows": 192
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "sae1-az1",
+    "combo_start": "2024-10-03 07:50:00",
+    "combo_end": "2024-10-04 09:40:00",
+    "rows": 137
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "sae1-az2",
+    "combo_start": "2024-10-08 03:40:00",
+    "combo_end": "2024-10-09 04:50:00",
+    "rows": 121
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "use2-az1",
+    "combo_start": "2024-10-06 06:50:00",
+    "combo_end": "2024-10-07 07:10:00",
+    "rows": 147
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "usw1-az3",
+    "combo_start": "2024-10-08 03:30:00",
+    "combo_end": "2024-10-09 05:00:00",
+    "rows": 142
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "usw2-az3",
+    "combo_start": "2024-09-13 06:10:00",
+    "combo_end": "2024-09-15 06:10:00",
+    "rows": 237
+  },
+  {
+    "InstanceType": "c7i.large",
+    "AZ": "usw2-az4",
+    "combo_start": "2024-09-30 02:40:00",
+    "combo_end": "2024-10-02 23:00:00",
+    "rows": 340
+  },
+  {
+    "InstanceType": "m5a.large",
+    "AZ": "usw1-az3",
+    "combo_start": "2024-09-29 14:30:00",
+    "combo_end": "2024-09-30 10:10:00",
+    "rows": 114
+  },
+  {
+    "InstanceType": "m7g.large",
+    "AZ": "apse2-az1",
+    "combo_start": "2024-09-26 06:00:00",
+    "combo_end": "2024-09-27 04:50:00",
+    "rows": 111
+  },
+  {
+    "InstanceType": "m7g.large",
+    "AZ": "apse2-az2",
+    "combo_start": "2024-09-26 06:00:00",
+    "combo_end": "2024-09-27 04:50:00",
+    "rows": 111
+  },
+  {
+    "InstanceType": "m7i.large",
+    "AZ": "apne1-az2",
+    "combo_start": "2024-09-26 05:40:00",
+    "combo_end": "2024-09-27 04:00:00",
+    "rows": 118
+  },
+  {
+    "InstanceType": "m7i.large",
+    "AZ": "apne1-az4",
+    "combo_start": "2024-09-26 05:40:00",
+    "combo_end": "2024-09-27 04:30:00",
+    "rows": 120
+  },
+  {
+    "InstanceType": "m7i.large",
+    "AZ": "apne2-az2",
+    "combo_start": "2024-09-26 05:40:00",
+    "combo_end": "2024-09-27 06:20:00",
+    "rows": 115
+  },
+  {
+    "InstanceType": "m7i.large",
+    "AZ": "apne2-az4",
+    "combo_start": "2024-09-26 05:40:00",
+    "combo_end": "2024-09-27 06:20:00",
+    "rows": 116
+  },
+  {
+    "InstanceType": "r5a.large",
+    "AZ": "euw1-az1",
+    "combo_start": "2024-10-01 14:20:00",
+    "combo_end": "2024-10-02 12:40:00",
+    "rows": 109
+  },
+  {
+    "InstanceType": "r5a.large",
+    "AZ": "euw2-az1",
+    "combo_start": "2024-09-29 14:30:00",
+    "combo_end": "2024-09-30 11:30:00",
+    "rows": 121
+  },
+  {
+    "InstanceType": "r5ad.large",
+    "AZ": "use1-az5",
+    "combo_start": "2024-09-19 15:00:00",
+    "combo_end": "2024-09-20 15:50:00",
+    "rows": 150
+  },
+  {
+    "InstanceType": "r6a.large",
+    "AZ": "apne1-az1",
+    "combo_start": "2024-09-19 15:00:00",
+    "combo_end": "2024-09-20 15:50:00",
+    "rows": 150
+  },
+  {
+    "InstanceType": "r6a.large",
+    "AZ": "euc1-az3",
+    "combo_start": "2024-09-19 15:00:00",
+    "combo_end": "2024-09-20 14:40:00",
+    "rows": 116
+  },
+  {
+    "InstanceType": "r6a.large",
+    "AZ": "use2-az2",
+    "combo_start": "2024-09-26 05:50:00",
+    "combo_end": "2024-09-27 06:30:00",
+    "rows": 148
+  },
+  {
+    "InstanceType": "r6a.large",
+    "AZ": "use2-az3",
+    "combo_start": "2024-09-26 05:50:00",
+    "combo_end": "2024-09-27 06:30:00",
+    "rows": 149
+  },
+  {
+    "InstanceType": "r6g.large",
+    "AZ": "apne2-az4",
+    "combo_start": "2024-09-20 00:50:00",
+    "combo_end": "2024-09-20 23:20:00",
+    "rows": 123
+  },
+  {
+    "InstanceType": "r6g.large",
+    "AZ": "apse1-az2",
+    "combo_start": "2024-09-19 15:00:00",
+    "combo_end": "2024-09-20 14:40:00",
+    "rows": 120
+  },
+  {
+    "InstanceType": "r6g.large",
+    "AZ": "apse1-az3",
+    "combo_start": "2024-09-26 05:40:00",
+    "combo_end": "2024-09-27 04:40:00",
+    "rows": 108
+  },
+  {
+    "InstanceType": "r7a.large",
+    "AZ": "usw2-az4",
+    "combo_start": "2024-09-19 15:00:00",
+    "combo_end": "2024-09-20 14:50:00",
+    "rows": 111
+  },
+  {
+    "InstanceType": "r7i.large",
+    "AZ": "use1-az4",
+    "combo_start": "2024-09-26 05:50:00",
+    "combo_end": "2024-09-27 06:30:00",
+    "rows": 149
+  },
+  {
+    "InstanceType": "r7i.large",
+    "AZ": "use1-az5",
+    "combo_start": "2024-09-26 05:50:00",
+    "combo_end": "2024-09-27 06:00:00",
+    "rows": 75
+  }
+]
