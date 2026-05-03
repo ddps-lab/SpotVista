@@ -1,44 +1,47 @@
 #!/bin/bash
-# Download large CSV data files from S3 (gitignored due to GitHub's 100MB limit).
-# Requires: AWS CLI configured with read access to ddps-lab-research-artifact.
+# Download the figures/ data archive from GitHub Releases and extract it.
+# The archive is split into 2 GiB parts to fit GitHub's per-file release limit.
+#
+# Usage:
+#   ./scripts/download_large_data.sh           # skip if figures/ already populated
+#   ./scripts/download_large_data.sh --force   # re-download and overwrite
 
 set -e
 
-BUCKET="s3://ddps-lab-research-artifact/spotvista-fgcs"
+REPO="ddps-lab/SpotVista"
+TAG="figures-v1"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+TMP_DIR="$ROOT_DIR/.figures-download"
 
-FILES=(
-  "figures/common/data/t2t3df_08.csv"
-  "figures/common/data/plotdf_08.csv"
-  "figures/common/data/plotdf_08_processed.csv"
-  "figures/fig02_as_explanation/data/maxinstance.csv"
-  "figures/fig04_dataset_collection/data/bar_data/ground_truth.csv"
-  "figures/fig04_dataset_collection/data/bar_data/usqs.csv"
-  "figures/fig05_usqs_step_size/data/temporal_error_full.csv"
-  "figures/fig14_delta_as_window/data/raw_box_period1_full.csv"
-  "figures/fig14_delta_as_window/data/raw_box_period2_full.csv"
-  "figures/fig14_delta_as_window/data/raw_box_period3_full.csv"
-  "figures/fig14_delta_as_window/data/raw_box_period4_full.csv"
-  "figures/fig15_t3_t2_correlation/data/maxinstance2.csv"
-  "figures/fig15_t3_t2_correlation/data/maxinstance3.csv"
-)
+cd "$ROOT_DIR"
 
-if ! command -v aws >/dev/null 2>&1; then
-  echo "ERROR: aws CLI not found. Install: https://aws.amazon.com/cli/" >&2
+if [[ -d "figures" ]] && [[ -n "$(find figures -name '*.csv' -size +100M -print -quit 2>/dev/null)" ]] && [[ "$1" != "--force" ]]; then
+  echo "figures/ already contains large data files. Use --force to re-download."
+  exit 0
+fi
+
+if ! command -v gh >/dev/null 2>&1 && ! command -v curl >/dev/null 2>&1; then
+  echo "ERROR: need either 'gh' or 'curl'" >&2
   exit 1
 fi
 
+mkdir -p "$TMP_DIR"
+cd "$TMP_DIR"
+
+echo "Downloading release $TAG from $REPO..."
+if command -v gh >/dev/null 2>&1; then
+  gh release download "$TAG" --repo "$REPO" --pattern 'figures.tar.gz.part-*' --clobber
+else
+  for part in 00 01; do
+    url="https://github.com/$REPO/releases/download/$TAG/figures.tar.gz.part-$part"
+    echo "  $url"
+    curl -L --fail -o "figures.tar.gz.part-$part" "$url"
+  done
+fi
+
+echo "Extracting into $ROOT_DIR..."
 cd "$ROOT_DIR"
-echo "Downloading ${#FILES[@]} files into $ROOT_DIR"
+cat "$TMP_DIR"/figures.tar.gz.part-* | tar -xzf -
 
-for f in "${FILES[@]}"; do
-  if [[ -f "$f" ]] && [[ "$1" != "--force" ]]; then
-    echo "skip (exists): $f   [use --force to overwrite]"
-    continue
-  fi
-  mkdir -p "$(dirname "$f")"
-  echo "===> $f"
-  aws s3 cp "$BUCKET/$f" "$f" --only-show-errors
-done
-
+rm -rf "$TMP_DIR"
 echo "Done."

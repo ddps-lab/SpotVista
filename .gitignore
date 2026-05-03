@@ -61,3 +61,6 @@ figures/fig14_delta_as_window/data/raw_box_period3_full.csv
 figures/fig14_delta_as_window/data/raw_box_period4_full.csv
 figures/fig15_t3_t2_correlation/data/maxinstance2.csv
 figures/fig15_t3_t2_correlation/data/maxinstance3.csv
+
+# Temp dir used by scripts/download_large_data.sh
+.figures-download/
