@@ -18,7 +18,7 @@ import {
 
 const NAV_ITEMS = [
   { href: "/", label: "Recommender" },
-  { href: "/dataset", label: "Dataset" },
+  { href: "/artifact", label: "Artifact" },
 ] as const
 
 export function Header() {
