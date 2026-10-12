@@ -18,6 +18,7 @@ interface DatePickerProps {
   onDateChange: (date: Date | undefined) => void
   placeholder?: string
   disabled?: boolean
+  minDate?: Date
   maxDate?: Date
   className?: string
 }
@@ -27,6 +28,7 @@ export function DatePicker({
   onDateChange,
   placeholder = "Pick a date",
   disabled = false,
+  minDate,
   maxDate,
   className
 }: DatePickerProps) {
@@ -52,6 +54,7 @@ export function DatePicker({
           selected={date}
           onSelect={onDateChange}
           disabled={(date) => {
+            if (minDate && date < minDate) return true
             if (maxDate && date > maxDate) return true
             return false
           }}

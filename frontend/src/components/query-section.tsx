@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import axios from "axios"
+import { addDays, parseISO } from "date-fns"
 import { RefreshCw, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -9,8 +9,15 @@ import { DatePicker } from "@/components/ui/date-picker"
 import { Label } from "@/components/ui/label"
 import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select"
 import { Slider } from "@/components/ui/slider"
-
-type AssociationMap = Record<string, { Region: string[] }>
+import { rankCandidates } from "@/lib/score"
+import {
+  fetchDay,
+  fetchIndex,
+  windowDays,
+  WINDOW_DAYS,
+  type DayFile,
+  type SpotVistaIndex,
+} from "@/lib/spotvista-data"
 
 interface QuerySectionProps {
   vendor: "AWS"
@@ -23,10 +30,6 @@ interface QuerySectionProps {
 const DEFAULT_INSTANCES = ["c8i.xlarge", "m8i.xlarge", "r8i.xlarge"]
 const DEFAULT_REGIONS = ["us-east-1", "us-west-2", "ap-northeast-2"]
 const MAX_SELECTED = 3
-
-const ASSOCIATION_URL =
-  "https://api.spotlake.ddps.cloud/query-selector/associated/association_aws.json"
-const QUERY_URL = "https://spotvista.ddps.cloud/api/query"
 
 const toLocalDateStr = (d: Date) => {
   const y = d.getFullYear()
@@ -42,7 +45,7 @@ export function QuerySection({
   setLoading,
   setToast,
 }: QuerySectionProps) {
-  const [associations, setAssociations] = useState<AssociationMap | null>(null)
+  const [index, setIndex] = useState<SpotVistaIndex | null>(null)
 
   const [selectedInstances, setSelectedInstances] =
     useState<string[]>(DEFAULT_INSTANCES)
@@ -51,41 +54,37 @@ export function QuerySection({
   const [endDate, setEndDate] = useState<Date | undefined>(() => new Date())
   const [weight, setWeight] = useState(0.5)
 
+  // 기준일 전날까지 WINDOW_DAYS일이 모두 공개된 날짜만 고를 수 있다.
+  const minDate = index ? addDays(parseISO(index.dates.first), WINDOW_DAYS) : undefined
+  const maxDate = index ? addDays(parseISO(index.dates.last), 1) : new Date()
+
   useEffect(() => {
-    let cancelled = false
-    async function load() {
-      try {
-        const res = await axios.get<AssociationMap[]>(ASSOCIATION_URL)
-        if (!cancelled && Array.isArray(res.data) && res.data[0]) {
-          setAssociations(res.data[0])
-        }
-      } catch (error) {
-        console.error("Failed to load association data", error)
-      }
-    }
-    load()
-    return () => {
-      cancelled = true
-    }
+    const controller = new AbortController()
+    fetchIndex(controller.signal)
+      .then((data) => {
+        setIndex(data)
+        const latest = addDays(parseISO(data.dates.last), 1)
+        setEndDate((d) => (d && d > latest ? latest : d))
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) console.error("Failed to load index", error)
+      })
+    return () => controller.abort()
   }, [vendor])
 
   const instanceOptions = useMemo(
-    () => (associations ? Object.keys(associations).sort() : []),
-    [associations],
+    () => (index ? Object.keys(index.instance_types).sort() : []),
+    [index],
   )
 
   const regionOptions = useMemo(() => {
-    if (!associations || selectedInstances.length === 0) return []
+    if (!index || selectedInstances.length === 0) return []
     const regions = new Set<string>()
     selectedInstances.forEach((instance) => {
-      const assoc = associations[instance]
-      if (!assoc) return
-      assoc.Region.forEach((r) => {
-        if (r && r !== "nan") regions.add(r)
-      })
+      index.instance_types[instance]?.forEach((r) => regions.add(r))
     })
     return Array.from(regions).sort((a, b) => a.localeCompare(b))
-  }, [associations, selectedInstances])
+  }, [index, selectedInstances])
 
   const handleInstancesChange = (next: string[]) => {
     setSelectedInstances(next)
@@ -122,7 +121,7 @@ export function QuerySection({
   const handleReset = () => {
     setSelectedInstances(DEFAULT_INSTANCES)
     setSelectedRegions(DEFAULT_REGIONS)
-    setEndDate(new Date())
+    setEndDate(maxDate)
     setWeight(0.5)
     onReset()
   }
@@ -132,18 +131,15 @@ export function QuerySection({
 
     setLoading(true)
     try {
-      const payload = {
-        instance_types: selectedInstances,
-        regions: selectedRegions,
-        end: toLocalDateStr(endDate!),
+      const days = windowDays(toLocalDateStr(endDate!))
+      const files = await Promise.all(
+        selectedInstances.flatMap((type) => days.map((day) => fetchDay(day, type))),
+      )
+      const data = rankCandidates(
+        files.filter((f): f is DayFile => f !== null),
+        selectedRegions,
         weight,
-      }
-      const res = await fetch(QUERY_URL, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      })
-      if (!res.ok) throw new Error(res.statusText || "Request failed")
-      const data = await res.json()
+      )
       onDataFetch(data)
       setToast({
         type: "success",
@@ -199,7 +195,8 @@ export function QuerySection({
           date={endDate}
           onDateChange={setEndDate}
           placeholder="Pick a date"
-          maxDate={new Date()}
+          minDate={minDate}
+          maxDate={maxDate}
           className="w-full"
         />
       </div>

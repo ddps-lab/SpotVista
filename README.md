@@ -8,86 +8,52 @@ SpotVista ranks AWS Spot instance placements by combining availability signals (
 
 ## Architecture
 
+The site is fully static. Scores are computed in the browser from daily aggregates that SpotLake publishes; there is no query API.
+
 ```text
-┌────────────────────────────────┐         ┌────────────────────────────────┐
-│  frontend/ (Next.js, static)   │ ──POST─▶ spotvista.ddps.cloud/api/query  │
-│  S3 + CloudFront               │         │  (AWS Lambda, not in this repo)│
-└────────────────────────────────┘         └────────────────────────────────┘
-          ▲
-          │ association / latest data (JSON)
-          │
-  d26bk4799jlxhe.cloudfront.net  (Spotlake dataset, read-only)
+┌────────────────────────────────┐   GET index.json, daily/YYYY-MM-DD/{type}.json
+│  frontend/ (Next.js, static)   │ ◀──────────────────────────────────────────────┐
+│  S3 + CloudFront               │                                                │
+│  scoring runs in the browser   │   d2krkjqajp4l0e.cloudfront.net/spotvista/aws/ │
+└────────────────────────────────┘   (SpotLake public data, read-only)            │
+                                                                                  │
+            spotvista-daily-exporter Lambda (ddps-lab/spotlake, daily 01:00 UTC) ─┘
+            builds per-day T3 aggregates from TITANS change points
 ```
 
-| Piece       | Tech                                                         | Notes                          |
-| ----------- | ------------------------------------------------------------ | ------------------------------ |
-| Frontend    | Next.js 16 (App Router, static export), React 19, TypeScript | Tailwind v4 + shadcn/ui        |
-| Grid        | AG Grid Community                                            | sortable / filter / CSV export |
-| Charts      | Recharts                                                     | time-series per numeric field  |
-| Dark mode   | next-themes                                                  | System / Light / Dark          |
-| Query API   | `POST /api/query` (external)                                 | see below                      |
-| Dataset API | Spotlake CloudFront JSON                                     | read-only snapshots            |
+| Piece     | Tech                                                         | Notes                          |
+| --------- | ------------------------------------------------------------ | ------------------------------ |
+| Frontend  | Next.js 16 (App Router, static export), React 19, TypeScript | Tailwind v4 + shadcn/ui        |
+| Grid      | AG Grid Community                                            | sortable / filter / CSV export |
+| Dark mode | next-themes                                                  | System / Light / Dark          |
+| Data      | SpotLake CloudFront JSON (`spotvista/aws/`)                  | daily T3 aggregates            |
+| Scoring   | `frontend/src/lib/score.ts`                                  | see below                      |
 
 ## Routes
 
-| Path        | Page        | Purpose                                                                                           |
-| ----------- | ----------- | ------------------------------------------------------------------------------------------------- |
-| `/`         | Recommender | Pick up to 3 instance types × 3 regions, reference date, weight slider → ranked recommendations.  |
-| `/dataset`  | Dataset     | Browse the raw Spotlake dataset for AWS / GCP / Azure, filter by instance / region / AZ / period. |
+| Path        | Page        | Purpose                                                                                          |
+| ----------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| `/`         | Recommender | Pick up to 3 instance types × 3 regions, reference date, weight slider → ranked recommendations. |
+| `/artifact` | Artifact    | Links to the paper, this repository, the figure data release and SpotLake.                       |
 
-## Query API
+## Data
 
-**Endpoint:** `POST https://spotvista.ddps.cloud/api/query`
-**Content-Type:** `application/json`
+Produced by `utility/spotvista_daily_exporter` in [ddps-lab/spotlake](https://github.com/ddps-lab/spotlake):
 
-### Request
+- `index.json`: available date range (`dates.first`, `dates.last`) and the InstanceType → Region list used by the selectors.
+- `daily/YYYY-MM-DD/{InstanceType}.json`: one row per AZ with that day's T3 aggregates over the 10-minute grid
+  (`n`, `sum`, `sumsq`, `sum_iy`, `first`, `last`) and the day's last `SPS`, `T3`, `SpotPrice`.
+  The 10-minute curve itself is not published.
 
-| Field            | Type       | Description                                                         |
-| ---------------- | ---------- | ------------------------------------------------------------------- |
-| `instance_types` | `string[]` | EC2 instance types (e.g. `"c8i.xlarge"`)                            |
-| `regions`        | `string[]` | AWS regions (e.g. `"us-east-1"`)                                    |
-| `end`            | `string`   | `YYYY-MM-DD`. Availability window is the 7 days ending on this date |
-| `weight`         | `number`   | 0–1. `1.0` = availability only, `0.0` = cost only                   |
+## Scoring
 
-```json
-{
-  "instance_types": ["c8i.xlarge", "m8i.xlarge", "r8i.xlarge"],
-  "regions": ["us-west-2", "us-east-1", "ap-northeast-2"],
-  "end": "2026-03-20",
-  "weight": 0.5
-}
-```
+The scoring is the original SpotVista query module (`calculate_score.py`, `lambda_function.py`), ported to TypeScript in `frontend/src/lib/score.ts`.
 
-### Response
-
-JSON array sorted by `TotalScore` (descending).
-
-| Field               | Type      | Description                             |
-| ------------------- | --------- | --------------------------------------- |
-| `id`                | `integer` | Rank (1 = best)                         |
-| `InstanceType`      | `string`  | EC2 instance type                       |
-| `Region`            | `string`  | AWS region                              |
-| `AZ`                | `string`  | Availability zone                       |
-| `SpotPrice`         | `number`  | Current spot price (USD/hr)             |
-| `SPS`               | `integer` | Spot Placement Score                    |
-| `T3`                | `integer` | Target capacity score                   |
-| `AvailabilityScore` | `number`  | 0–1                                     |
-| `CostScore`         | `number`  | 0–1 (higher = cheaper)                  |
-| `TotalScore`        | `number`  | `weight·Availability + (1-weight)·Cost` |
-| `Weight`            | `number`  | Weight used in scoring                  |
-
-### curl
-
-```bash
-curl -X POST https://spotvista.ddps.cloud/api/query \
-  -H "Content-Type: application/json" \
-  -d '{
-    "instance_types": ["c8i.xlarge"],
-    "regions": ["us-east-1"],
-    "end": "2026-03-20",
-    "weight": 0.5
-  }'
-```
+- **Window**: the 7 days before the reference date (the reference date itself is excluded), up to 1,008 ten-minute T3 values. The aggregates of the 7 days are combined into exactly the area, standard deviation and slope the original module computed from the raw values.
+- **AvailabilityScore** (0–100): area under the T3 curve relative to T3 = 50 throughout, minus a volatility penalty (standard deviation) plus a trend term (slope), each scaled by 0.1.
+- **CostScore** (0–100): exponential transform of the latest spot price; the cheapest candidate scores 100 and the mean price 50.
+- **TotalScore**: `weight × AvailabilityScore + (1 − weight) × CostScore`.
+- Candidates use the latest value in the window and need `SPS > 0` and `SpotPrice > 0`. Entries with fewer than two T3 values are left out.
 
 ## Local development
 
@@ -99,7 +65,7 @@ npm run build        # static export → frontend/out
 npm run lint
 ```
 
-Requires Node 20+.
+Requires Node 20+. The SpotLake CloudFront allows `http://localhost:3000`. To read other data, set `NEXT_PUBLIC_SPOTVISTA_DATA_ORIGIN` (default `https://d2krkjqajp4l0e.cloudfront.net/spotvista/aws`).
 
 ## Deployment
 
@@ -128,14 +94,16 @@ SpotVista/
 ├── frontend/
 │   ├── public/             # static assets (icons, logos)
 │   └── src/
-│       ├── app/            # App Router: / and /dataset
+│       ├── app/            # App Router: / and /artifact
 │       ├── components/
 │       │   ├── ui/         # shadcn primitives + AG Grid wrappers
 │       │   ├── header.tsx
-│       │   ├── query-section.tsx          # recommender form
-│       │   ├── dataset-query-section.tsx  # dataset filters
-│       │   └── dataset-query-chart.tsx    # recharts time series
-│       └── lib/            # cn(), vendor-logo helper
+│       │   └── query-section.tsx   # recommender form
+│       └── lib/
+│           ├── spotvista-data.ts   # fetch index.json and daily files
+│           ├── score.ts            # scoring (port of the query module)
+│           └── …                   # cn(), vendor-logo helper
+├── scripts/                # figure data download
 └── README.md
 ```
 
