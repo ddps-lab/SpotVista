@@ -131,7 +131,8 @@ export function QuerySection({
 
     setLoading(true)
     try {
-      const days = windowDays(toLocalDateStr(endDate!))
+      const reference = toLocalDateStr(endDate!)
+      const days = windowDays(reference)
       const files = await Promise.all(
         selectedInstances.flatMap((type) => days.map((day) => fetchDay(day, type))),
       )
@@ -141,10 +142,15 @@ export function QuerySection({
         weight,
       )
       onDataFetch(data)
-      setToast({
-        type: "success",
-        message: "Query submitted successfully.",
-      })
+      // 지난 날짜를 고르면 그때 없던 타입은 데이터가 없다.
+      setToast(
+        data.length
+          ? { type: "success", message: "Query submitted successfully." }
+          : {
+              type: "error",
+              message: `No data for the selected instance types and regions in the ${WINDOW_DAYS} days before ${reference}.`,
+            },
+      )
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Unknown error"

@@ -53,6 +53,8 @@ export function DatePicker({
           mode="single"
           selected={date}
           onSelect={onDateChange}
+          startMonth={minDate}
+          endMonth={maxDate}
           disabled={(date) => {
             if (minDate && date < minDate) return true
             if (maxDate && date > maxDate) return true

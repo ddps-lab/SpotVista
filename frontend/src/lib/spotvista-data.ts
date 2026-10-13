@@ -5,8 +5,9 @@
  * 하루 T3 합계를 만들어 SpotLake 공개 CloudFront에 올린다. 10분 단위 값은 공개하지
  * 않고, 점수 계산에 필요한 합계만 있다(score.ts 참고).
  *
- * 교차 출처 요청이라 CloudFront CORS 정책에 이 사이트와 http://localhost:3000 이
- * 허용돼 있다. 로컬에서 다른 데이터를 보려면 NEXT_PUBLIC_SPOTVISTA_DATA_ORIGIN 을 준다.
+ * 교차 출처 요청이라 CloudFront CORS 정책이 이 사이트(spotvista.ddps.cloud)를 허용한다.
+ * localhost는 허용돼 있지 않으므로, 로컬에서는 NEXT_PUBLIC_SPOTVISTA_DATA_ORIGIN 을
+ * 같은 출처의 프록시나 로컬 사본 주소로 준다.
  */
 
 export const DATA_ORIGIN =

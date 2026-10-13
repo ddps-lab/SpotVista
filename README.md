@@ -65,7 +65,7 @@ npm run build        # static export → frontend/out
 npm run lint
 ```
 
-Requires Node 20+. The SpotLake CloudFront allows `http://localhost:3000`. To read other data, set `NEXT_PUBLIC_SPOTVISTA_DATA_ORIGIN` (default `https://d2krkjqajp4l0e.cloudfront.net/spotvista/aws`).
+Requires Node 20+. The data CloudFront allows only `https://spotvista.ddps.cloud` for CORS, so a page served from localhost cannot read it directly. For local development set `NEXT_PUBLIC_SPOTVISTA_DATA_ORIGIN` (default `https://d2krkjqajp4l0e.cloudfront.net/spotvista/aws`) to a same-origin proxy of that path or to a local copy of the files.
 
 ## Deployment
 
