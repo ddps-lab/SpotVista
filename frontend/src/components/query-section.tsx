@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { addDays, parseISO } from "date-fns"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { parseISO } from "date-fns"
 import { RefreshCw, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,11 +11,10 @@ import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select"
 import { Slider } from "@/components/ui/slider"
 import { rankCandidates } from "@/lib/score"
 import {
-  fetchDay,
   fetchIndex,
-  windowDays,
+  fetchScores,
   WINDOW_DAYS,
-  type DayFile,
+  type ScoreFile,
   type SpotVistaIndex,
 } from "@/lib/spotvista-data"
 
@@ -46,6 +45,8 @@ export function QuerySection({
   setToast,
 }: QuerySectionProps) {
   const [index, setIndex] = useState<SpotVistaIndex | null>(null)
+  // 기준일마다 점수 파일 하나(압축 약 0.5MB). 같은 날을 다시 분석하면 받아 둔 것을 쓴다.
+  const scores = useRef(new Map<string, ScoreFile | null>())
 
   const [selectedInstances, setSelectedInstances] =
     useState<string[]>(DEFAULT_INSTANCES)
@@ -54,16 +55,16 @@ export function QuerySection({
   const [endDate, setEndDate] = useState<Date | undefined>(() => new Date())
   const [weight, setWeight] = useState(0.5)
 
-  // 기준일 전날까지 WINDOW_DAYS일이 모두 공개된 날짜만 고를 수 있다.
-  const minDate = index ? addDays(parseISO(index.dates.first), WINDOW_DAYS) : undefined
-  const maxDate = index ? addDays(parseISO(index.dates.last), 1) : new Date()
+  // 점수 파일이 있는 기준일만 고를 수 있다.
+  const minDate = index ? parseISO(index.dates.first) : undefined
+  const maxDate = index ? parseISO(index.dates.last) : new Date()
 
   useEffect(() => {
     const controller = new AbortController()
     fetchIndex(controller.signal)
       .then((data) => {
         setIndex(data)
-        const latest = addDays(parseISO(data.dates.last), 1)
+        const latest = parseISO(data.dates.last)
         setEndDate((d) => (d && d > latest ? latest : d))
       })
       .catch((error) => {
@@ -132,15 +133,13 @@ export function QuerySection({
     setLoading(true)
     try {
       const reference = toLocalDateStr(endDate!)
-      const days = windowDays(reference)
-      const files = await Promise.all(
-        selectedInstances.flatMap((type) => days.map((day) => fetchDay(day, type))),
-      )
-      const data = rankCandidates(
-        files.filter((f): f is DayFile => f !== null),
-        selectedRegions,
-        weight,
-      )
+      if (!scores.current.has(reference)) {
+        scores.current.set(reference, await fetchScores(reference))
+      }
+      const file = scores.current.get(reference)
+      const data = file
+        ? rankCandidates(file, selectedInstances, selectedRegions, weight)
+        : []
       onDataFetch(data)
       // 지난 날짜를 고르면 그때 없던 타입은 데이터가 없다.
       setToast(

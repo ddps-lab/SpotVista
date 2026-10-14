@@ -8,17 +8,17 @@ SpotVista ranks AWS Spot instance placements by combining availability signals (
 
 ## Architecture
 
-The site is fully static. Scores are computed in the browser from daily aggregates that SpotLake publishes; there is no query API.
+The site is fully static and there is no query API. SpotLake publishes, for each reference date, one JSON with the availability score of every spot instance; the browser downloads that file, keeps the selected instance types and regions, and applies only the cost score and weight.
 
 ```text
-┌────────────────────────────────┐   GET index.json, daily/YYYY-MM-DD/{type}.json
+┌────────────────────────────────┐   GET index.json, scores/YYYY-MM-DD.json
 │  frontend/ (Next.js, static)   │ ◀──────────────────────────────────────────────┐
 │  S3 + CloudFront               │                                                │
-│  scoring runs in the browser   │   d2krkjqajp4l0e.cloudfront.net/spotvista/aws/ │
+│  filter + cost score + weight  │   d2krkjqajp4l0e.cloudfront.net/spotvista/aws/ │
 └────────────────────────────────┘   (SpotLake public data, read-only)            │
                                                                                   │
             spotvista-daily-exporter Lambda (ddps-lab/spotlake, daily 01:00 UTC) ─┘
-            builds per-day T3 aggregates from TITANS change points
+            scores every instance over the 7-day T3 window from TITANS change points
 ```
 
 | Piece     | Tech                                                         | Notes                          |
@@ -26,8 +26,8 @@ The site is fully static. Scores are computed in the browser from daily aggregat
 | Frontend  | Next.js 16 (App Router, static export), React 19, TypeScript | Tailwind v4 + shadcn/ui        |
 | Grid      | AG Grid Community                                            | sortable / filter / CSV export |
 | Dark mode | next-themes                                                  | System / Light / Dark          |
-| Data      | SpotLake CloudFront JSON (`spotvista/aws/`)                  | daily T3 aggregates            |
-| Scoring   | `frontend/src/lib/score.ts`                                  | see below                      |
+| Data      | SpotLake CloudFront JSON (`spotvista/aws/`)                  | one score file per date        |
+| Ranking   | `frontend/src/lib/score.ts`                                  | see below                      |
 
 ## Routes
 
@@ -40,18 +40,16 @@ The site is fully static. Scores are computed in the browser from daily aggregat
 
 Produced by `utility/spotvista_daily_exporter` in [ddps-lab/spotlake](https://github.com/ddps-lab/spotlake):
 
-- `index.json`: available date range (`dates.first`, `dates.last`) and the InstanceType → Region list used by the selectors.
-- `daily/YYYY-MM-DD/{InstanceType}.json`: one row per AZ with that day's T3 aggregates over the 10-minute grid
-  (`n`, `sum`, `sumsq`, `sum_iy`, `first`, `last`) and the day's last `SPS`, `T3`, `SpotPrice`.
-  The 10-minute curve itself is not published.
+- `index.json`: available reference dates (`dates.first`, `dates.last`) and the InstanceType → Region list of the latest one, used by the selectors.
+- `scores/YYYY-MM-DD.json`: every candidate for that reference date as `rows[InstanceType][Region] = [[AZ, SPS, T3, SpotPrice, AvailabilityScore], …]`. About 50,000 rows, 1.9 MB (about 0.5 MB compressed). One request per reference date; the page keeps it in memory, so changing the selection or weight does not download it again.
 
 ## Scoring
 
-The scoring is the original SpotVista query module (`calculate_score.py`, `lambda_function.py`), ported to TypeScript in `frontend/src/lib/score.ts`.
+The scoring is the original SpotVista query module (`calculate_score.py`, `lambda_function.py`).
 
-- **Window**: the 7 days before the reference date (the reference date itself is excluded), up to 1,008 ten-minute T3 values. The aggregates of the 7 days are combined into exactly the area, standard deviation and slope the original module computed from the raw values.
-- **AvailabilityScore** (0–100): area under the T3 curve relative to T3 = 50 throughout, minus a volatility penalty (standard deviation) plus a trend term (slope), each scaled by 0.1.
-- **CostScore** (0–100): exponential transform of the latest spot price; the cheapest candidate scores 100 and the mean price 50.
+- **Window**: the 7 days before the reference date (the reference date itself is excluded), up to 1,008 ten-minute T3 values.
+- **AvailabilityScore** (0–100), precomputed by SpotLake: area under the T3 curve relative to T3 = 50 throughout, minus a volatility penalty (standard deviation) plus a trend term (slope), each scaled by 0.1. SpotLake stores per-day aggregates and combines the 7 days into exactly the area, standard deviation and slope the original module computed from the raw values. Rounded to 4 decimals.
+- **CostScore** (0–100), in the browser (`frontend/src/lib/score.ts`): exponential transform of the latest spot price; the cheapest selected candidate scores 100 and the mean price 50.
 - **TotalScore**: `weight × AvailabilityScore + (1 − weight) × CostScore`.
 - Candidates use the latest value in the window and need `SPS > 0` and `SpotPrice > 0`. Entries with fewer than two T3 values are left out.
 
@@ -100,8 +98,8 @@ SpotVista/
 │       │   ├── header.tsx
 │       │   └── query-section.tsx   # recommender form
 │       └── lib/
-│           ├── spotvista-data.ts   # fetch index.json and daily files
-│           ├── score.ts            # scoring (port of the query module)
+│           ├── spotvista-data.ts   # fetch index.json and score files
+│           ├── score.ts            # cost score, weight, ranking
 │           └── …                   # cn(), vendor-logo helper
 ├── scripts/                # figure data download
 └── README.md
