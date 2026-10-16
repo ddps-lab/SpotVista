@@ -69,7 +69,8 @@ export const awsColDefs: ColDef<SpotVistaRow>[] = [
   {
     field: "T3",
     headerName: "T3",
-    headerTooltip: "Target capacity score (T3) from SpotVista query response.",
+    headerTooltip:
+      "T3: the largest node count whose Spot Placement Score is 3, at the latest time in the window (max 50).",
     comparator: naComparator,
     valueFormatter: formatValue,
     maxWidth: 80,
@@ -78,7 +79,7 @@ export const awsColDefs: ColDef<SpotVistaRow>[] = [
     field: "AvailabilityScore",
     headerName: "Availability Score",
     headerTooltip:
-      "The maximum number of nodes whose Spot Placement Score (SPS) transitions from 2 to 1 denoted as T2",
+      "0-100. Area under the T3 curve over the 7 days before the reference date, adjusted for its trend and volatility.",
     comparator: naComparator,
     valueFormatter: formatValue,
   },
